@@ -5,8 +5,21 @@
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vite App</title>
+    <style>
+      /* 全局重置，去掉白边并禁止横向滚动，使用 body.no-scroll 控制纵向滚动 */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #161823;
+        color: #929398;
+        overflow-x: hidden;
+      }
+      body.no-scroll { overflow: hidden !important; }
+      #app { min-height: 100vh; }
+    </style>
   </head>
-  <body>
+  <body class="no-scroll">
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>

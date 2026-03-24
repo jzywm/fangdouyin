@@ -1,24 +1,24 @@
 <template>
   <div class="setting">
     <ul class="setting-list">
-      <li>
-        设置
+      <li class="setting-item">
+        <span class="iconfont icon-shezhi"></span>设置
         <ul class="setting-sub-list">
           <li v-for="(item, index) in settingMoreShow" @click="sideCarStore.getAlert(item.id)" :key="item.id ?? index">
-            {{ item.title }}
+            <span :class="`iconfont ${item.icon}`"></span>{{ item.title }}
           </li>
         </ul>
       </li>
-      <li>
-        关于
+      <li class="setting-item">
+        <span class="iconfont icon-gengduo"></span>关于
         <ul class="setting-sub-list">
           <li v-for="(item, index) in aboutShow" @click="sideCarStore.getAlert(item.id)" :key="item.id ?? index">
             {{ item.title }}
           </li>
         </ul>
       </li>
-      <li>
-        帮助
+      <li class="setting-item">
+        <span class="iconfont icon-bangzhu"></span>帮助
         <ul class="setting-sub-list">
           <li v-for="(item, index) in questionShow" @click="sideCarStore.getAlert(item.id)" :key="item.id ?? index">
             {{ item.title }}
@@ -33,9 +33,7 @@
 import { useSideCarStore,  } from '@/stores/sideCar'
 
 const sideCarStore = useSideCarStore()
-const settingMoreShow = sideCarStore.settingMoreShow
-const aboutShow = sideCarStore.aboutShow
-const questionShow = sideCarStore.questionShow
+const { settingMoreShow, aboutShow, questionShow } = sideCarStore
 sideCarStore.getAlert(1)
 </script>
 
@@ -46,6 +44,10 @@ sideCarStore.getAlert(1)
   position: relative;
   display: block;
   box-sizing: border-box;
+}
+.setting-item {
+  padding: 8px;
+  color: rgba(255, 255, 255, 0.8);
 }
 .setting-list {
   list-style: none;

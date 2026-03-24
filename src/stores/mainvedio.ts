@@ -9,6 +9,7 @@ interface IVideoData {
     hostId: number,
     hosttoken: string,
     title: string,
+    content: string
     videoUrl: string,
     coverUrl: string,
     loveCount: number,
@@ -21,7 +22,7 @@ interface IVideoData {
 
 export const useMainVideoStore = defineStore('mainVideo', {
     state: () => ({
-        activeId: 1,
+        activecardId: 1,
         tablist: [
             { id: 1, title: '全部' },
             { id: 2, title: '公开课' },
@@ -49,6 +50,7 @@ export const useMainVideoStore = defineStore('mainVideo', {
                 hostId: 1,
                 hosttoken: 'token1',
                 title: '视频标题1',
+                content: "1235454524",
                 videoUrl: 'https://example.com/video1.mp4',
                 coverUrl: 'https://example.com/cover1.jpg',
                 loveCount: 100,
@@ -56,18 +58,24 @@ export const useMainVideoStore = defineStore('mainVideo', {
                 timer: '2024-06-01 12:00:00',
                 longer: '10:00',
                 alt: '视频封面1',
-                commentCount: 10,   
+                commentCount: 10,
             }
         ]
     }),
     actions: {
-        async getactivedVideo(activeId: number) {
-            if (this.activeId === activeId) {
+        async getactivedVideo(activecarId: number) {
+            // 如果点击的是同一个标签，不重复请求
+            if (this.activecardId === activecarId) {
                 return;
             }
-            activeId = activeId || 1;
-            const response = await getVideo(`https://example.com/api/videos?categoryId=${activeId}`);
-            this.activedVideo = response.data as IVideoData[];
+            this.activecardId = activecarId;
+            try {
+                // 调用 getVideo 函数，传入 tabcar 参数
+                const response = await getVideo({ tabcar: activecarId });
+                this.activedVideo = response as IVideoData[];
+            } catch (error) {
+                console.error("Error fetching video data:", error);
+            }
         },
         enterVideo(videoId: number) {
             router.push(`/video/${videoId}`);

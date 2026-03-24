@@ -1,19 +1,22 @@
 <script setup lang="ts">
 // 抖音网页版首页组件
 import sideCar from '@/components/sideCar.vue'
-import headerSerach from '@/components/headerSerach.vue'
-import mainVedio from './components/mainVedio.vue';
+import headerSearch from '@/components/headerSearch.vue'  
+import loginIn from '@/components/loginIn.vue'
+import mainView from '@/components/mainView.vue'
+
 </script>
 
 <template>
   <div class="app">
     <div class="sidebar"><sideCar /></div>
     <div class="main">
-      <headerSerach />
-      <mainVedio />
+      <headerSearch />
+      <mainView />
     </div>
-
   </div>
+
+  <loginIn />
 </template>
 
 <style scoped>
@@ -24,7 +27,10 @@ import mainVedio from './components/mainVedio.vue';
   background-color: #161823
 }
 
-body {
+
+html,body {
+  margin: 0;
+  padding: 0;
   overflow: hidden;
   height: 100vh;
   width: 100vw;
@@ -32,7 +38,7 @@ body {
 }
 
 .app {
-  height: 100;
+  height: 100%;
   width: 100%;
   overflow: hidden;
   display: flex;

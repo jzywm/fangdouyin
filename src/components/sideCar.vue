@@ -6,10 +6,15 @@
     </div>
     <div class="nav">
       <ul class="nav-list">
-        <li v-for="item in sideCarStore.sideCarShow" :key="item.id" :class="{ 'active-index': sideCarStore.activeId === item.id }" @click="activited(item.id)">{{ item.title }}</li>
+        <li v-for="item in sideCarStore.sideCarShow" :key="item.id" :class="{ 'active-index': item.router === currentRoute }">
+          <router-link :to="item.router" style="text-decoration: none; color: inherit; display: block; cursor: pointer;">
+            <span :class="`iconfont ${item.icon}`"></span>
+            {{ item.title }} 
+          </router-link>
+        </li>
       </ul>
     </div>
-    <div class="foot">
+    <div class="foot">  
       <div>
         <Setting />
       </div>
@@ -18,18 +23,18 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useSideCarStore } from '../stores/sideCar'
-import { onMounted } from 'vue'
 import Setting from './SettingMore.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const sideCarStore = useSideCarStore()
+const router = useRouter()
+const route = useRoute()
 
-onMounted(() => {
-})
+// 响应式获取当前路由路径
+const currentRoute = computed(() => route.path)
 
-function activited(id: number) {
-  sideCarStore.getcomponent(id)
-}
 </script>
 
 <style scoped>
@@ -90,6 +95,12 @@ function activited(id: number) {
   border-radius: 8px;
   margin: 4px 10px;
   font-size: 14px;
+}
+
+.iconfont {
+  font-size: 18px;
+  margin-right: 12px;
+  color: #e9ffff;
 }
 
 .nav-list li:hover {
