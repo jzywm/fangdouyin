@@ -11,6 +11,9 @@ import theater from '../components/mainTheater.vue'
 import shortPlays from '../components/mainShortPlay.vue'
 import games from '../components/mainGames.vue'
 
+import useUserStore from '../stores/user'
+import { useModalStore } from '../stores/module'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -29,19 +32,23 @@ const router = createRouter({
     }, {
       path: '/follow',
       name: 'follow',
-      component: follow
+      component: follow,
+      meta: { requiresAuth: true }
     }, {
       path: '/friends',
       name: 'friends',
-      component: friends
+      component: friends,
+      meta: { requiresAuth: true }
     }, {
       path: '/profile',
       name: 'profile',
-      component: profile
+      component: profile,
+      meta: { requiresAuth: true }
     }, {
       path: '/live',
       name: 'live',
-      component: live
+      component: live,
+      meta: { requiresAuth: true }
     }, {
       path: '/theater',
       name: 'theater',
@@ -71,6 +78,19 @@ router.beforeEach((to, from, next) => {
       return
     }
   }
+
+  // 检查是否需要登录
+  if (to.meta.requiresAuth) {
+    const userStore = useUserStore()
+    if (!userStore.userid) {
+      // 打开登录模态框
+      const modalStore = useModalStore()
+      alert("请先登录"),
+      modalStore.modeloption = '1'
+      return
+    }
+  }
+
   // 更新时间并允许导航
   lastRouteChangeTime = currentTime
   next()

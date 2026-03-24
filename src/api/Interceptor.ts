@@ -1,7 +1,4 @@
 import axios from "axios";
-import useUserStore from "@/stores/user";
-import { useModalStore } from "@/stores/module";
-import router from "@/router";
 import isLogin from "@/hooks/isLogin";
 
 
@@ -10,17 +7,6 @@ const islongin = isLogin
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
   console.log("Request Interceptor:", config);
-
-  if (config.url === "/recommend" || config.url === "/follow" || config.url === "/friends" || config.url === "/profile" || config.url === "/live") {
-    // 从用户存储中获取token并设置到请求头
-    if (!islongin) {
-      const moduleStore = useModalStore();
-      moduleStore.getModelOption("7");
-      return Promise.reject(new Error("请先登录"));
-    }
-    config.headers["Authorization"] = useUserStore().token;
-    return config;
-  }
   return config;
 }, function (error) {
   // 对请求错误做些什么

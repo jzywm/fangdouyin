@@ -1,67 +1,73 @@
 <template>
-<div v-if="modeloption === '1'" class="modal-overlay" @click.self="closeModal">
-    <div class="login" role="dialog" aria-modal="true">
-    <div class="header">
-        <div class="logo">
-            <span class="iconfont icon-douyin"></span>
-        </div>
-        <div class="title">
-            <h2>登录后免费畅享高清视频</h2>
-        </div>
-        <div class="cancle" @click="closeModal">
-            <el-icon color="#b9b9bd" ><Close /></el-icon>
-        </div>
-    </div>
-    <main class="login-fangfa">
-        <div class="login-fangfa-left">
-            <div class="login-fangfa-left-header">
-                <h3>扫码登录</h3>
-            </div>
-            <div class="login-fangfa-left-content">
-                <div class="qrcode-placeholder">
-                    <el-icon size="64"><Camera /></el-icon>
-                    <p>扫码登录</p>
+    <div v-if="modeloption === '1'" class="modal-overlay" @click.self="closeModal">
+        <div class="login" role="dialog" aria-modal="true">
+            <div class="header">
+                <div class="logo">
+                    <span class="iconfont icon-douyin"></span>
+                </div>
+                <div class="title">
+                    <h2>登录后免费畅享高清视频</h2>
+                </div>
+                <div class="cancle" @click="closeModal">
+                    <el-icon color="#b9b9bd">
+                        <Close />
+                    </el-icon>
                 </div>
             </div>
-            <div class="content">
-                <p>打开 <span class="gaoliang">抖音APP</span> 点击左上角<el-icon><Expand /></el-icon> 扫一扫</p>
-            </div>
-            <div class="footer">
-                <el-button type="text" round="true" link="true">如何扫码
-                </el-button>
-            </div>
-        </div>
-        <div class="middle">
+            <main class="login-fangfa">
+                <div class="login-fangfa-left">
+                    <div class="login-fangfa-left-header">
+                        <h3>扫码登录</h3>
+                    </div>
+                    <div class="login-fangfa-left-content">
+                        <div class="qrcode-placeholder">
+                            <el-icon size="64">
+                                <Camera />
+                            </el-icon>
+                            <p>扫码登录</p>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <p>打开 <span class="gaoliang">抖音APP</span> 点击左上角<el-icon>
+                                <Expand />
+                            </el-icon> 扫一扫</p>
+                    </div>
+                    <div class="footer">
+                        <el-button type="text" round="true" link="true">如何扫码
+                        </el-button>
+                    </div>
+                </div>
+                <div class="middle">
 
-        </div>
-        <div class="login-fangfa-right">
-            <div class="login-fangfa-right-header">
-            <button class="login-fangfa-right-header-left"  :class="{ active: method === 'code' }"   @click="method = 'code'">验证码登录</button>
-            <button class="login-fangfa-right-header-right"  :class="{ active: method === 'password' }" @click="method = 'password'">密码登录</button>
-            </div>
-            <form v-if="method === 'code'" action="">
-                <input type="tel" 
-                placeholder="请输入手机号" 
-                v-model="phone1"
-                class="inputtel" />
-                <div class="get">
-                    <input type="password" placeholder="请输入验证码" v-model="code" class="inputpwd"/>
-                    <button type="button" class="get-code-btn" @click="getCode('your_api_url_here', phone1)">{{ loginIn.second === loginIn.totalSecond ? "获取验证码" : loginIn.second + "后获取" }}</button>
                 </div>
-                <button type="button" class="login-btn" :disabled="!code" @click="verifyCode(code)">登录</button>
-            </form>
-            <form v-if="method === 'password'" action="123">
-                 <input type="tel" 
-                placeholder="请输入手机号" 
-                v-model="phone2" 
-                class="inputtel" />
-                <input type="password" placeholder="请输入密码" v-model="password" class="inputpwd"/>
-                <button type="button" class="login-btn" :disabled="!phone2" @click="verifyPassword(Number(phone2), password)">登录</button>
-            </form>
+                <div class="login-fangfa-right">
+                    <div class="login-fangfa-right-header">
+                        <button class="login-fangfa-right-header-left" :class="{ active: method === 'code' }"
+                            @click="method = 'code'">验证码登录</button>
+                        <button class="login-fangfa-right-header-right" :class="{ active: method === 'password' }"
+                            @click="method = 'password'">密码登录</button>
+                    </div>
+                    <form v-if="method === 'code'" action="">
+                        <input type="tel" placeholder="请输入手机号" v-model="phone1" class="inputtel" />
+                        <div class="get">
+                            <input type="password" placeholder="请输入验证码" v-model="code" class="inputpwd" />
+                            <button type="button" class="get-code-btn" @click="getCode('your_api_url_here', phone1)">{{
+                                second === totalSecond ? "获取验证码" :
+                                loginIn.second + "后获取" }}</button>
+                        </div>
+                        <button type="button" class="login-btn" :disabled="!code || !phone1"
+                            @click="verifyCode(code)">登录</button>
+                    </form>
+                    <form v-if="method === 'password'" action="123">
+                        <input type="tel" placeholder="请输入手机号" v-model="phone2" class="inputtel" />
+                        <input type="password" placeholder="请输入密码" v-model="password" class="inputpwd" />
+                        <button type="button" class="login-btn" :disabled="!phone2 || !password"
+                            @click="verifyPassword(Number(phone2), password)">登录</button>
+                    </form>
+                </div>
+            </main>
         </div>
-    </main>
     </div>
-</div>
 </template>
 
 <script lang="ts" setup name="LoginIn">
@@ -278,12 +284,42 @@ const { second, totalSecond } = storeToRefs(loginIn);
 
 .login-btn {
     width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    background: #ffb6c1;
+    padding: 12px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #ff0050, #ff6a85);
     color: #fff;
     border: none;
     cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(255, 0, 80, 0.3);
+    margin-top: 10px;
+}
+
+.login-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 0, 80, 0.4);
+    background: linear-gradient(135deg, #ff1a60, #ff7a95);
+}
+
+.login-btn:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(255, 0, 80, 0.3);
+}
+
+.login-btn:disabled {
+    background: #e0e0e0;
+    color: #999;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.login-btn:hover:not(:disabled)::before {
+    left: 100%;
 }
 
 @media (max-width: 900px) {
