@@ -42,32 +42,11 @@ export const useMainVideoStore = defineStore('mainVideo', {
             { id: 16, title: '汽车' },
             { id: 17, title: '美妆' },
         ],
-        activedVideo: [
-            {
-                id: 1,
-                hostName: '主播1',
-                hostAvatar: 'https://example.com/avatar1.jpg',
-                hostId: 1,
-                hosttoken: 'token1',
-                title: '视频标题1',
-                content: "1235454524",
-                videoUrl: 'https://example.com/video1.mp4',
-                coverUrl: 'https://example.com/cover1.jpg',
-                loveCount: 100,
-                fensiCount: 50,
-                timer: '2024-06-01 12:00:00',
-                longer: '10:00',
-                alt: '视频封面1',
-                commentCount: 10,
-            }
-        ]
+        activedVideo: [] as IVideoData[]
     }),
     actions: {
         async getactivedVideo(activecarId: number) {
-            // 如果点击的是同一个标签，不重复请求
-            if (this.activecardId === activecarId) {
-                return;
-            }
+            // 即使是同一个标签，也获取数据（确保初始加载时能获取数据）
             this.activecardId = activecarId;
             try {
                 // 调用 getVideo 函数，传入 tabcar 参数

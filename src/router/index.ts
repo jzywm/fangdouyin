@@ -10,6 +10,7 @@ import live from '../components/mainLive.vue'
 import theater from '../components/mainTheater.vue'
 import shortPlays from '../components/mainShortPlay.vue'
 import games from '../components/mainGames.vue'
+import detailVideo from '../components/detailVedio.vue'
 
 import useUserStore from '../stores/user'
 import { useModalStore } from '../stores/module'
@@ -21,6 +22,13 @@ const router = createRouter({
       path: '/',
       name: 'mainVideo',
       component: mainVideo,
+      children: [
+        {
+          path: '/vedio/:videoId',
+          name: 'detailVideo',
+          component: detailVideo,
+        },
+      ]
     }, {
       path: '/recommend',
       name: 'recommend',
@@ -86,7 +94,7 @@ router.beforeEach((to, from, next) => {
       // 打开登录模态框
       const modalStore = useModalStore()
       alert("请先登录"),
-      modalStore.modeloption = '1'
+        modalStore.modeloption = '1'
       return
     }
   }

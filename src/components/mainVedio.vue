@@ -43,11 +43,19 @@
 </template>
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { onBeforeMount } from 'vue'
 import { useMainVideoStore } from '@/stores/mainvedio'
 
 const mainVideoStore = useMainVideoStore()
 const { activedVideo } = storeToRefs(mainVideoStore)
 const { getactivedVideo, enterVideo } = mainVideoStore
+
+// 在组件渲染之前调用 getactivedVideo 获取初始数据
+onBeforeMount(() => {
+    getactivedVideo(mainVideoStore.activecardId)
+})
+
+
 
 </script>
 <style scoped>

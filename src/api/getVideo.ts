@@ -640,7 +640,16 @@ export default function getVideo({ tabcar }: { tabcar: number }): Promise<VideoD
     return new Promise((resolve) => {
         // 模拟异步请求
         setTimeout(() => {
-            const data = videoDataMap[tabcar] || videoDataMap[1] || [];
+            let data: VideoData[] = [];
+
+            if (tabcar === 1) {
+                // 当 tabcar 为 1 时，返回所有数据
+                 data = Object.values(videoDataMap).flat();
+            } else {
+                // 当 tabcar 不为 1 时，返回对应分类的数据，若不存在则返回默认数据
+                data = videoDataMap[tabcar] || videoDataMap[1] || [];
+            }
+
             resolve(data);
         }, 100);
     });
