@@ -57,7 +57,7 @@ export const useMainVideoStore = defineStore('mainVideo', {
             }
         },
         enterVideo(videoId: number) {
-            router.push(`/video/${videoId}`);
+            router.push(`/detailvideo/${videoId}`);
         }
     }
 })

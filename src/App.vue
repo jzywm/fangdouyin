@@ -9,9 +9,9 @@ import mainView from '@/components/mainView.vue'
 
 <template>
   <div class="app">
-    <div class="sidebar"><sideCar /></div>
+    <div class="sidebar" v-if="!$route.meta.fullScreen"><sideCar /></div>
     <div class="main">
-      <headerSearch />
+      <headerSearch v-if="!$route.meta.fullScreen"/>
       <mainView />
     </div>
   </div>

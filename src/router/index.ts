@@ -14,6 +14,7 @@ import detailVideo from '../components/detailVedio.vue'
 
 import useUserStore from '../stores/user'
 import { useModalStore } from '../stores/module'
+import { FullScreen } from '@element-plus/icons-vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,13 +23,6 @@ const router = createRouter({
       path: '/',
       name: 'mainVideo',
       component: mainVideo,
-      children: [
-        {
-          path: '/vedio/:videoId',
-          name: 'detailVideo',
-          component: detailVideo,
-        },
-      ]
     }, {
       path: '/recommend',
       name: 'recommend',
@@ -69,6 +63,11 @@ const router = createRouter({
       path: '/games',
       name: 'games',
       component: games
+    }, {
+      path: '/detailVideo/:id',
+      name: 'detailVideo',
+      component: detailVideo,
+      meta: { fullScreen: true }
     }
   ]
 })

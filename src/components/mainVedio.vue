@@ -7,36 +7,38 @@
             </div>
         </div>
         <div class="videolist">
-            <div v-for="value in activedVideo" :key="value.id" class="videoItem" @click="enterVideo(value.id)">
-                <div class="videoalt">
-                    <div class="vedio">
-                        <img :src="value.coverUrl" :alt="value.alt">
-                        <div class="play-button">
-                            <svg viewBox="0 0 24 24" width="24" height="24">
-                                <path d="M8 5v14l11-7z" fill="white"></path>
-                            </svg>
-                        </div>
-                        <div class="video-duration">
-                            {{ value.longer }}
-                        </div>
-                    </div>
-                </div>
-                <div class="videomessage">
-                    <div class="title">
-                        {{ value.title }}
-                    </div>
-                    <div class="vediohost">
-                        <div class="hostname">
-                            @{{ value.hostName }}
-                        </div>
-                        <div class="timer">
-                            {{ value.timer }}
-                        </div>
-                        <div class="more">
-                            <span class="iconfont icon-gengduo"></span>
+            <div v-for="value in activedVideo" :key="value.id" class="videoItem" @click="getdetailvideo(value.id)">
+                <RouterLink :to="`/detailvideo/${value.id}`" class="routerlink">
+                    <div class="videoalt">
+                        <div class="vedio">
+                            <img :src="value.coverUrl" :alt="value.alt">
+                            <div class="play-button">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M8 5v14l11-7z" fill="white"></path>
+                                </svg>
+                            </div>
+                            <div class="video-duration">
+                                {{ value.longer }}
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <div class="videomessage">
+                        <div class="title">
+                            {{ value.title }}
+                        </div>
+                        <div class="vediohost">
+                            <div class="hostname">
+                                @{{ value.hostName }}
+                            </div>
+                            <div class="timer">
+                                {{ value.timer }}
+                            </div>
+                            <div class="more">
+                                <span class="iconfont icon-gengduo"></span>
+                            </div>
+                        </div>
+                    </div>
+                </RouterLink>
             </div>
         </div>
     </div>
@@ -45,10 +47,13 @@
 import { storeToRefs } from 'pinia'
 import { onBeforeMount } from 'vue'
 import { useMainVideoStore } from '@/stores/mainvedio'
+import { useDetailVideoStore } from '@/stores/detailVediio'
 
 const mainVideoStore = useMainVideoStore()
 const { activedVideo } = storeToRefs(mainVideoStore)
-const { getactivedVideo, enterVideo } = mainVideoStore
+const { getactivedVideo } = mainVideoStore
+const detailVideoStore = useDetailVideoStore()
+const getdetailvideo = detailVideoStore.getdetailvideo
 
 // 在组件渲染之前调用 getactivedVideo 获取初始数据
 onBeforeMount(() => {
@@ -251,7 +256,7 @@ onBeforeMount(() => {
     display: -webkit-box;
     /* 限制标题最多显示2行 */
     -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    line-clamp: 2;
     /* 设置盒子方向为垂直，用于多行文本省略 */
     transition: color 0.2s ease;
 }
