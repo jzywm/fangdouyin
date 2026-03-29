@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import getVideo from "../api/getVideo"
+import getVideo from "../api/getVideolist"
 import router from "@/router";
 
 interface IVideoData {

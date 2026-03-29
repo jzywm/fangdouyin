@@ -1,8 +1,9 @@
 <template>
-  <div class="detail-vedio" :id:number="detailVideoStore.detailVideo.id">
+  <div class="detail-vedio" :id="detailVideoStore.detailVideo.id">
     <detailHrader />
     <detailLeft />
     <detailRight />
+    <detailVideoComment />
     <detailFooter />
   </div>
 </template>
@@ -12,6 +13,7 @@ import detailHrader from './detailHrader.vue'
 import detailLeft from './detailLeft.vue'
 import detailRight from './detailRight.vue'
 import detailFooter from './detailFooter.vue'
+import detailVideoComment from './detailVideoComment.vue'
 
 import { useDetailVideoStore } from '@/stores/detailVediio'
 import { onMounted } from 'vue'

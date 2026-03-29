@@ -51,9 +51,9 @@
                         <input type="tel" placeholder="请输入手机号" v-model="phone1" class="inputtel" />
                         <div class="get">
                             <input type="password" placeholder="请输入验证码" v-model="code" class="inputpwd" />
-                            <button type="button" class="get-code-btn" @click="getCode('your_api_url_here', phone1)">{{
+                            <button type="button" class="get-code-btn" @click="getCode(phone1)">{{
                                 second === totalSecond ? "获取验证码" :
-                                loginIn.second + "后获取" }}</button>
+                                    loginIn.second + "后获取" }}</button>
                         </div>
                         <button type="button" class="login-btn" :disabled="!code || !phone1"
                             @click="verifyCode(code)">登录</button>
@@ -75,7 +75,6 @@ import { useModalStore } from '@/stores/module';
 import { ref } from 'vue';
 import { useLoginstore } from '@/stores/login';
 import { storeToRefs } from 'pinia';
-import { Close, Expand, Camera } from '@element-plus/icons-vue';
 
 const modalStore = useModalStore();
 const { modeloption } = storeToRefs(modalStore);

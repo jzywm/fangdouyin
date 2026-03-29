@@ -1,8 +1,9 @@
 import { defineStore } from "pinia"
 import getCode from "../api/getCode"
-import getpassword from "@/api/getpassword";
-import useUserStore from "./user";
-import LoginIn from "@/components/loginIn.vue";
+import postpassword from "@/api/postpassword";
+import { useUserStore } from "./user";
+
+
 
 export const useLoginstore = defineStore('login', {
     state: () => ({
@@ -16,14 +17,14 @@ export const useLoginstore = defineStore('login', {
         timer: 0
     }),
     actions: {
-        async getCode(url: string, phone: string) {
+        async getCode(phone: string) {
             // 验证手机号格式
             const phoneRegex = /^1[3-9]\d{9}$/;
-            if (!phone.trim()) {
+            if (phone.trim() === "") {
                 alert("手机号不能为空");
                 return false;
             }
-            if (!phoneRegex.test(phone)) {
+            if (phoneRegex.test(phone) === false) {
                 alert("请输入正确的手机号码");
                 return false;
             }
@@ -38,37 +39,42 @@ export const useLoginstore = defineStore('login', {
                 }, 1000)
             }
             try {
-                const response = await getCode(url, phone);
-                this.rightcode = response.data;
+                const response = await getCode("getcodeurl", phone);
+                this.userid = response.data.userid
             } catch (error) {
                 console.error("Error fetching code:", error)
             }
         },
-        verifyCode(code: string) {
-            const loginitem = postcode(this.userid)
+        async verifyCode(code: string) {
+            const userStore = useUserStore();
+            const loginitem = await postcode(this.userid, code)
             if (loginitem.login === true) {
-                useuserstore.userid = loginitem.userid
-                useuserstore.token = loginitem.token
+                userStore.userid = loginitem.userid
+                userStore.token = loginitem.token
                 this.LoginIn = "true";
-                return true
+                return true;
             } else {
                 alert("验证码错误，请重新输入");
                 return false;
             }
         },
-        async verifyPassword(phone: number, password: string) {
+        async verifyPassword(phone: string, password: string) {
+            if (phone.trim() === "") {
+                alert("手机号不能为空");
+                return false;
+            }
             if (password.trim() === "") {
                 alert("密码不能为空");
                 return false;
             }
-            if (!verifyCodevedio(this.userid)) {
-                return false;
-            }
             try {
-                const response = await getpassword('your_api_url_here', phone);
-                this.rightpassword = response.data;
-                if (this.rightpassword === password) {
+
+                const response = await postpassword("passwordurl", phone, password);
+                if (response.login === true) {
+                    const userStore = useUserStore();
                     this.LoginIn = "true";
+                    userStore.token = response.token
+                    userStore.userid = response.userid
                     return true;
                 } else {
                     this.LoginIn = "false";
@@ -76,7 +82,7 @@ export const useLoginstore = defineStore('login', {
                     return false;
                 }
             } catch (error) {
-                console.error("Error fetching password:", error);
+                console.error("Error posting password:", error);
                 return false;
             }
         }

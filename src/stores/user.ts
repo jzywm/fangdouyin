@@ -1,13 +1,14 @@
 import { defineStore } from "pinia";
+import { useModalStore } from "./module";
 
-const useUserStore = defineStore("user", {
+export const useUserStore = defineStore("user", {
   state: () => ({
     userid: '',
-    token: " null ",
+    token: 'null',
   }),
   actions: {
-
+    login() {
+      useModalStore().getModelOption('1')
+    }
   }
 })
-
-export default useUserStore

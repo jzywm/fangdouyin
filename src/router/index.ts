@@ -12,7 +12,7 @@ import shortPlays from '../components/mainShortPlay.vue'
 import games from '../components/mainGames.vue'
 import detailVideo from '../components/detailVedio.vue'
 
-import useUserStore from '../stores/user'
+import { useUserStore } from '../stores/user'
 import { useModalStore } from '../stores/module'
 import { FullScreen } from '@element-plus/icons-vue'
 
@@ -64,7 +64,7 @@ const router = createRouter({
       name: 'games',
       component: games
     }, {
-      path: '/detailVideo/:id',
+      path: '/detailvideo/:id',
       name: 'detailVideo',
       component: detailVideo,
       meta: { fullScreen: true }

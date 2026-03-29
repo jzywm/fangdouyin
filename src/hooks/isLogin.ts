@@ -1,4 +1,4 @@
-import useUserStore from "@/stores/user";
+import { useUserStore } from "@/stores/user";
 export default function isLogin() {
   if (!useUserStore().userid) {
     alert("请先登录");

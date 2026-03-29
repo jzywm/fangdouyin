@@ -8,20 +8,20 @@
         <span class="iconfont icon-jiahao"></span>
       </div>
     </div>
-    <div class="right-item like">
-      <div class="icon">
+    <div class="right-item like" @click="detailVideoStore.likeVideo(value.id, user.token)">
+      <div class="icon" :class="{ 'active-like': detailVideoStore.isLike }">
         <span class="iconfont icon-aixin"></span>
       </div>
       <div class="num">{{ value.likenum }}</div>
     </div>
-    <div class="right-item comment">
+    <div class="right-item comment" @click="detailVideoStore.isShowCommentList = !detailVideoStore.isShowCommentList">
       <div class="icon">
         <span class="iconfont icon-sixin"></span>
       </div>
       <div class="num">{{ value.commentnum }}</div>
     </div>
-    <div class="right-item collect">
-      <div class="icon">
+    <div class="right-item right-item-collect collect" @click="detailVideoStore.collectVideo(value.id, user.token)">
+      <div class="icon" :class="{ 'active-collect': detailVideoStore.isCollect }">
         <span class="iconfont icon-shoucang-yishoucang"></span>
       </div>
       <div class="num">{{ value.collectnum }}</div>
@@ -38,11 +38,20 @@
       </div>
     </div>
   </div>
+  <div class="comment-list" v-show="detailVideoStore.isShowCommentList === true">
+
+    <div v-for="item in detailVideoStore.commentList" :key="item.id">
+      {{ item.content }}
+    </div>
+  </div>
 </template>
 
 <script setup name="detailRight" lang="ts">
 
 import { useDetailVideoStore } from '@/stores/detailVediio'
+import { useUserStore } from '@/stores/user'
+
+const user = useUserStore()
 
 const detailVideoStore = useDetailVideoStore()
 const value = detailVideoStore.detailVideo
@@ -64,6 +73,7 @@ const value = detailVideoStore.detailVideo
   width: 35px;
   z-index: 9;
 }
+
 .right .right-item-author {
   display: flex;
   position: relative;
@@ -71,6 +81,7 @@ const value = detailVideoStore.detailVideo
   justify-items: center;
   align-items: center;
 }
+
 .guanzhu {
   position: absolute;
   top: 32px;
@@ -78,8 +89,9 @@ const value = detailVideoStore.detailVideo
   width: auto;
   height: auto;
   border-radius: 50%;
-  border: rgba(255, 255, 255, 0.05),2px;
+  border: rgba(255, 255, 255, 0.05), 2px;
 }
+
 .right .right-item {
   display: flex;
   flex-direction: column;
@@ -94,10 +106,23 @@ const value = detailVideoStore.detailVideo
   position: relative;
   overflow: hidden;
 }
+
+.active-like {
+  color: #fe2c55 !important;
+}
+
+.active-collect {
+  color: #ffb802 !important;
+}
+
 .right-item:hover {
   transform: translateY(-2px) scale(1.05);
   background-color: rgba(255, 255, 255, 0.05);
   box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+}
+
+.right-item-collect:hover {
+  color: #ffb802 !important;
 }
 
 .right-item:active {
