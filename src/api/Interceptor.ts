@@ -4,6 +4,9 @@ import isLogin from "@/hooks/isLogin";
 
 const islongin = isLogin
 
+// 设置请求基础URL
+axios.defaults.baseURL = 'http://localhost:3001';
+
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
   console.log("Request Interceptor:", config);

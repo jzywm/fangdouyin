@@ -2,6 +2,9 @@ import { defineStore } from "pinia"
 import getCode from "../api/getCode"
 import postpassword from "@/api/postpassword";
 import { useUserStore } from "./user";
+import postCode from "@/api/postcode";
+import getRegisterCode from "@/api/getRegisterCode";
+import postRegister from "@/api/postRegister"; 
 
 
 
@@ -14,7 +17,8 @@ export const useLoginstore = defineStore('login', {
         usertoken: " ",
         totalSecond: 5,
         second: 5,
-        timer: 0
+        timer: 0,
+        register: false
     }),
     actions: {
         async getCode(phone: string) {
@@ -47,7 +51,7 @@ export const useLoginstore = defineStore('login', {
         },
         async verifyCode(code: string) {
             const userStore = useUserStore();
-            const loginitem = await postcode(this.userid, code)
+            const loginitem = await postCode(this.userid, code)
             if (loginitem.login === true) {
                 userStore.userid = loginitem.userid
                 userStore.token = loginitem.token
@@ -85,6 +89,50 @@ export const useLoginstore = defineStore('login', {
                 console.error("Error posting password:", error);
                 return false;
             }
-        }
+        },
+        async getregistercode(phone: string) {
+            // 验证手机号格式
+            const phoneRegex = /^1[3-9]\d{9}$/;
+            if (phone.trim() === "") {
+                alert("手机号不能为空");
+                return false;
+            }
+            if (phoneRegex.test(phone) === false) {
+                alert("请输入正确的手机号码");
+                return false;
+            }
+            try {
+                const response = await getRegisterCode(phone);
+                this.rightcode = response.code;
+                alert("验证码已发送，请注意查收");
+                return true;
+            } catch (error) {
+                console.error("Error fetching code:", error);
+                alert("发送验证码失败，请稍后重试");
+                return false;
+            }
+        },
+        async registeruser(username: string, phone: string, password: string) {
+            if (username.trim() === "") {
+                alert("用户名不能为空");
+                return false;
+            }
+            const phoneRegex = /^1[3-9]\d{9}$/;
+            if (phone.trim() === "") {
+                alert("手机号不能为空");
+                return false;
+            }
+            if (phoneRegex.test(phone) === false) {
+                alert("请输入正确的手机号码");
+                return false;
+            }
+            if (password.trim() === "") {
+                alert("密码不能为空");
+                return false;
+            }
+            const response = await postRegister(username, phone, password);
+            alert("注册成功，请登录");
+            return true;
     }
-})
+        
+}})

@@ -41,30 +41,58 @@
 
                 </div>
                 <div class="login-fangfa-right">
-                    <div class="login-fangfa-right-header">
-                        <button class="login-fangfa-right-header-left" :class="{ active: method === 'code' }"
-                            @click="method = 'code'">验证码登录</button>
-                        <button class="login-fangfa-right-header-right" :class="{ active: method === 'password' }"
-                            @click="method = 'password'">密码登录</button>
-                    </div>
-                    <form v-if="method === 'code'" action="">
-                        <input type="tel" placeholder="请输入手机号" v-model="phone1" class="inputtel" />
-                        <div class="get">
-                            <input type="password" placeholder="请输入验证码" v-model="code" class="inputpwd" />
-                            <button type="button" class="get-code-btn" @click="getCode(phone1)">{{
-                                second === totalSecond ? "获取验证码" :
-                                    loginIn.second + "后获取" }}</button>
+                    <transition name="fade" mode="out-in">
+                        <div key="login" class="loginon" v-if="register === false">
+                            <div class="login-fangfa-right-header">
+                                <button class="login-fangfa-right-header-left" :class="{ active: method === 'code' }"
+                                    @click="method = 'code'">验证码登录</button>
+                                <button class="login-fangfa-right-header-right"
+                                    :class="{ active: method === 'password' }"
+                                    @click="method = 'password'">密码登录</button>
+                            </div>
+                            <form v-if="method === 'code'" action="">
+                                <input type="tel" placeholder="请输入手机号" v-model="phone1" class="inputtel" />
+                                <div class="get">
+                                    <input type="password" placeholder="请输入验证码" v-model="code" class="inputpwd" />
+                                    <button type="button" class="get-code-btn" @click="getCode(phone1)">{{
+                                        second === totalSecond ? "获取验证码" :
+                                            loginIn.second + "后获取" }}</button>
+                                </div>
+                                <button type="button" class="login-btn" :disabled="!code || !phone1"
+                                    @click="verifyCode(code)">登录</button>
+                            </form>
+                            <form v-if="method === 'password'" action="123">
+                                <input type="tel" placeholder="请输入手机号" v-model="phone2" class="inputtel" />
+                                <input type="password" placeholder="请输入密码" v-model="password" class="inputpwd" />
+                                <button type="button" class="login-btn" :disabled="!phone2 || !password"
+                                    @click="verifyPassword(phone2, password)">登录</button>
+                            </form>
+                            <div class="register" @click="register = true">
+                                <p>没有账号？<el-button type="text" link="true" round="true">立即注册</el-button></p>
+                            </div>
                         </div>
-                        <button type="button" class="login-btn" :disabled="!code || !phone1"
-                            @click="verifyCode(code)">登录</button>
-                    </form>
-                    <form v-if="method === 'password'" action="123">
-                        <input type="tel" placeholder="请输入手机号" v-model="phone2" class="inputtel" />
-                        <input type="password" placeholder="请输入密码" v-model="password" class="inputpwd" />
-                        <button type="button" class="login-btn" :disabled="!phone2 || !password"
-                            @click="verifyPassword(Number(phone2), password)">登录</button>
-                    </form>
+                        <div key="register" class="right-register" v-else>
+
+                            <form class="register-form">
+                                <input type="text" placeholder="请输入用户名" v-model="username" class="inputtel" />
+                                <div class="posttel">
+                                    <input type="tel" placeholder="请输入手机号" v-model="registerPhone" class="inputtel" />
+                                    <button class="" @click="getregistercode(registerPhone)">获取验证码</button>
+                                </div>
+
+                                <input type="password" placeholder="请输入密码" v-model="registerPassword"
+                                    class="inputpwd" />
+                                <button type="button" class="login-btn"
+                                    :disabled="!username || !registerPhone || !registerPassword"
+                                    @click="registeruser(username, registerPhone, registerPassword)">注册</button>
+                            </form>
+                            <div class="register" @click="register = false">
+                                <p>已有账号？<el-button type="text" link="true" round="true">立即登录</el-button></p>
+                            </div>
+                        </div>
+                    </transition>
                 </div>
+
             </main>
         </div>
     </div>
@@ -88,11 +116,14 @@ const phone2 = ref('')
 const code = ref('');
 const method = ref('code');
 const password = ref('');
+const username = ref('');
+const registerPhone = ref('');
+const registerPassword = ref('');
 
 const loginIn = useLoginstore();
-const { getCode, verifyCode, verifyPassword } = loginIn;
-const { second, totalSecond } = storeToRefs(loginIn);
-
+const { getCode, verifyCode, verifyPassword, getregistercode, registeruser } = loginIn;
+const { second, totalSecond, register } = storeToRefs(loginIn);
+    
 </script>
 
 <style scoped>
