@@ -50,16 +50,16 @@
                                     :class="{ active: method === 'password' }"
                                     @click="method = 'password'">密码登录</button>
                             </div>
-                            <form v-if="method === 'code'" action="">
+                            <form v-if="method === 'code'">
                                 <input type="tel" placeholder="请输入手机号" v-model="phone1" class="inputtel" />
                                 <div class="get">
                                     <input type="password" placeholder="请输入验证码" v-model="code" class="inputpwd" />
-                                    <button type="button" class="get-code-btn" @click="getCode(phone1)">{{
+                                    <button type="button" class="get-code-btn" @click="loginIn.getCode(phone1)">{{
                                         second === totalSecond ? "获取验证码" :
                                             loginIn.second + "后获取" }}</button>
                                 </div>
                                 <button type="button" class="login-btn" :disabled="!code || !phone1"
-                                    @click="verifyCode(code)">登录</button>
+                                    @click="verifyCode(phone1, code)">登录</button>
                             </form>
                             <form v-if="method === 'password'" action="123">
                                 <input type="tel" placeholder="请输入手机号" v-model="phone2" class="inputtel" />
@@ -72,19 +72,22 @@
                             </div>
                         </div>
                         <div key="register" class="right-register" v-else>
-
                             <form class="register-form">
                                 <input type="text" placeholder="请输入用户名" v-model="username" class="inputtel" />
-                                <div class="posttel">
-                                    <input type="tel" placeholder="请输入手机号" v-model="registerPhone" class="inputtel" />
-                                    <button class="" @click="getregistercode(registerPhone)">获取验证码</button>
+                                <input type="tel" placeholder="请输入手机号" v-model="registerPhone" class="inputtel" />
+                                <div class="getcode">
+                                    <input type="password" placeholder="请输入验证码" v-model="code" class="inputpwd" />
+                                    <button type="button" class="get-code-btn"
+                                        @click="getregistercode(registerPhone, username)">{{
+                                            second === totalSecond ? "获取验证码" :
+                                                loginIn.second + "后获取" }}</button>
                                 </div>
 
                                 <input type="password" placeholder="请输入密码" v-model="registerPassword"
                                     class="inputpwd" />
                                 <button type="button" class="login-btn"
-                                    :disabled="!username || !registerPhone || !registerPassword"
-                                    @click="registeruser(username, registerPhone, registerPassword)">注册</button>
+                                    :disabled="!username || !registerPhone || !registerPassword || !code"
+                                    @click="registeruser(username, registerPhone, registerPassword, code)">注册</button>
                             </form>
                             <div class="register" @click="register = false">
                                 <p>已有账号？<el-button type="text" link="true" round="true">立即登录</el-button></p>
@@ -92,7 +95,6 @@
                         </div>
                     </transition>
                 </div>
-
             </main>
         </div>
     </div>
@@ -123,7 +125,7 @@ const registerPassword = ref('');
 const loginIn = useLoginstore();
 const { getCode, verifyCode, verifyPassword, getregistercode, registeruser } = loginIn;
 const { second, totalSecond, register } = storeToRefs(loginIn);
-    
+
 </script>
 
 <style scoped>
@@ -350,6 +352,22 @@ const { second, totalSecond, register } = storeToRefs(loginIn);
 
 .login-btn:hover:not(:disabled)::before {
     left: 100%;
+}
+
+.getcode {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.getcode .inputpwd {
+    width: 60%;
+    margin: 0;
+}
+
+.getcode .get-code-btn {
+    width: 35%;
+    margin: 0;
 }
 
 @media (max-width: 900px) {

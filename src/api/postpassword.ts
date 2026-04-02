@@ -1,18 +1,18 @@
 import axios from "axios";
 
-export default async function postpassword(url: string, phone: string, password: string) {
-    const data = await axios({
-        method: 'post',
-        url: url,
-        responseType: 'object',
-        data: {
-            phone: phone,
-            password: password
-        }
-    }).then(function (response) {
+export default async function postpassword(tel: string, password: string) {
+    try {
+        const response = await axios({
+            method: 'post',
+            url: '/user/login/password',
+            data: {
+                tel,
+                password
+            }
+        });
         return response.data;
-    }).catch(function (error) {
+    } catch (error) {
         console.error("Error posting password:", error);
-    });
-    return data;
+        throw error;
+    }
 }

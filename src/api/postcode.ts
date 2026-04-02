@@ -1,17 +1,17 @@
 import axios from "axios";
 
 export default async function postCode(phone: string, code: string) {
-    const data = await axios('/api/v1/user/send_code', {
-        method: 'post',
-        data: {
-            tel: phone,
-            code: code
-        }
-    }).then(function (response) {
+    try {
+        const response = await axios('/user/login/code/verify', {
+            method: 'post',
+            data: {
+                tel: phone,
+                code: code
+            }
+        });
         return response.data;
-    }).catch(function (error) {
-        console.error("Error sending code:", error);
-        return { code: 500, message: "发送验证码失败，请稍后重试" };
-    });
-    return data;
+    } catch (error) {
+        console.error("Error verifying code:", error);
+        return { code: 500, message: "验证码验证失败，请稍后重试" };
+    }
 }
