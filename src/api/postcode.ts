@@ -1,8 +1,8 @@
-import axios from "axios";
+import request from '@/utils/Interceptor'
 
 export default async function postCode(phone: string, code: string) {
     try {
-        const response = await axios('/user/login/code/verify', {
+        const response = await request('/user/login/code/verify', {
             method: 'post',
             data: {
                 tel: phone,

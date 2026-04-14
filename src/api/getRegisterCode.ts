@@ -1,8 +1,8 @@
-import axios from "axios";
+import request from '@/utils/Interceptor'
 
 export default async function getRegisterCode(phone: string, username: string) {
     try {
-        const response = await axios('/user/register', {
+        const response = await request('/user/register', {
             method: 'GET',
             params: {
                 username,

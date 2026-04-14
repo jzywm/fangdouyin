@@ -95,11 +95,9 @@ const addDanmu = (text: string, color: string) => {
 onMounted(() => {
     initCanvas()
     draw() // 启动动画循环
-    
     setInterval(() => {
         addDanmu('这是新的一条弹幕', '#fff')
-    }, 2000)
-    
+    }, 2000) 
 })
 onUnmounted(() => {
     // 取消动画帧请求，防止内存泄漏
@@ -121,12 +119,24 @@ onUnmounted(() => {
     top: 0;
     left: 0;
     pointer-events: none;
+    z-index: 1;
 }
+
 #main-video {
     position: absolute;
     width: 100vw;
     height: 100vh;
     top: 0;
     left: 0;
+    z-index: 0;
+}
+video::-webkit-media-controls {
+    display: none !important;
+}
+video::-webkit-media-controls-start-playback-button {
+    display: none !important;
+}
+video::-webkit-media-controls-fullscreen-button {
+    display: none !important;
 }
 </style>

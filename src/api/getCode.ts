@@ -1,11 +1,11 @@
-import axios from "axios";
+import request from '@/utils/Interceptor'
 
 export default async function getCode(phone: string) {
     try {
-        const response = await axios('/user/login/code', {
+        const response = await request('/user/login/code', {
             method: 'post',
             data: {
-                tel: phone
+                'tel': `${phone}`
             }
         });
         return response.data;

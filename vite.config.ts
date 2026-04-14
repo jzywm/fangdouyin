@@ -6,22 +6,19 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    vueDevTools(),
-  ],
+  plugins: [vue(), vueDevTools()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   server: {
-    port: 5173,
     proxy: {
-      '/user': {
-        target: 'http://127.0.0.1:3000/api/v1/',
-        changeOrigin: true,
-      }
-    }
+      // 匹配所有以 '/api' 开头的请求
+      '/api': {
+        target: 'http://localhost:3000', // 你的后端服务器地址
+        changeOrigin: true, // 支持跨域，必须设置为 true
+      },
+    },
   },
 })

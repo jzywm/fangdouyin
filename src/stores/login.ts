@@ -5,10 +5,29 @@ import postpassword from "@/api/postpassword";
 import postCode from "@/api/postcode";
 import getRegisterCode from "@/api/getRegisterCode";
 import postRegister from "@/api/postRegister";
+import validateToken from "@/api/verifyToken"
 import { ElMessage } from "element-plus";
+import { useModalStore } from "@/stores/module"
+import { storeToRefs } from 'pinia'
 
-
-
+interface ApiResponse {
+  code: number;      // 状态码，例如 200, 404, 500
+  message: string;   // 返回的消息，例如 "成功", "用户不存在"
+  data: {
+    _id: string;
+    username: string;
+    tel: string;
+    Image: string;
+    createAT: string;
+    updateAT: string;
+    __v: number;
+    avatarImage: string;
+    code: string;
+    codeExpiresAt: string;
+    iat: number;
+    exp: number;
+  }
+}
 
 export const useLoginstore = defineStore('login', {
     state: () => ({
@@ -40,7 +59,8 @@ export const useLoginstore = defineStore('login', {
                 return true;
             } catch (error) {
                 console.error("Error fetching code:", error);
-                ElMessage.error("发送验证码失败，请稍后重试");
+                console.log(error)
+                ElMessage.error(`发送验证码失败，请稍后重试${error}`);
                 return false;
             }
         },
@@ -111,16 +131,21 @@ export const useLoginstore = defineStore('login', {
             const userStore = useUserStore();
             try {
                 const loginitem = await postCode(phone, code)
+                const modalStore = useModalStore()
                 if (loginitem.code === 200) {
                     userStore.userid = loginitem.data._id
                     userStore.token = loginitem.data.token
+                    userStore.username = loginitem.data.username
+                    userStore.islodin = true
                     this.LoginIn = "true";
                     localStorage.setItem("usertoken", loginitem.data.token)
                     localStorage.setItem("userid", loginitem.data._id)
                     ElMessage.success("登录成功");
+                    modalStore.modeloption = '新的值'
+                    console.log(loginitem.data)
                     return true;
                 } else {
-                    ElMessage.error("验证码错误，请重新输入");
+                    ElMessage.error(`验证码错误，请重新输入${loginitem.message}`);
                     return false;
                 }
             } catch (error) {
@@ -160,5 +185,14 @@ export const useLoginstore = defineStore('login', {
                 return false;
             }
         },
+        async verifylodin(token: string){
+            try{
+                const data = validateToken(token)
+                return data
+            }catch (error) {
+                console.error("Error verifying code:", error);
+                return false;
+            }
+        }
     }
 })

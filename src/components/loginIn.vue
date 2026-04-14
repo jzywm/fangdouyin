@@ -123,7 +123,7 @@ const registerPhone = ref('');
 const registerPassword = ref('');
 
 const loginIn = useLoginstore();
-const { getCode, verifyCode, verifyPassword, getregistercode, registeruser } = loginIn;
+const { verifyCode, verifyPassword, getregistercode, registeruser } = loginIn;
 const { second, totalSecond, register } = storeToRefs(loginIn);
 
 </script>

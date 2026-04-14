@@ -1,5 +1,5 @@
-import axios from 'axios'
+import request from '@/utils/Interceptor'
 
 export default function getCommentList(vedioid: number){
-  return axios.get(`/comment/${vedioid}`)
+  return request.get(`/comment/${vedioid}`)
 }

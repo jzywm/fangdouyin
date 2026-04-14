@@ -1,8 +1,8 @@
-import axios from "axios";
+import request from '@/utils/Interceptor'
 
 export default async function postRegister(username: string, tel: string, password: string, code: string) {
   try {
-    const response = await axios('/user/register', {
+    const response = await request('/user/register', {
       method: 'post',
       data: {
         username: username,

@@ -1,6 +1,6 @@
-import axios from "axios";
+import request from '@/utils/Interceptor'
 
 export async function getDetailVideo(videoId: number) {
-  const response = await axios.get(`/video/detail?videoId=${videoId}`);
+  const response = await request.get(`/video/detail?videoId=${videoId}`);
   return response.data
 }

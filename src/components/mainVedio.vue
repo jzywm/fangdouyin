@@ -168,6 +168,9 @@ onBeforeMount(() => {
 .videoalt {
     position: relative;
     width: 100%;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 8px;
     height: 70%;
     overflow: hidden;
     border-radius: 8px;
