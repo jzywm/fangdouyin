@@ -5,7 +5,7 @@ const verifyCode = (code: string) => {
   if (codeRegex.test(code)) {
     throw new Error("验证码格式错误");
   } else {
-    return axios.post(`/verifyCode`, { code })
+    return axios.post(`/user/verifyCode`, { code })
       .then((res) => res.data);
   }
 }

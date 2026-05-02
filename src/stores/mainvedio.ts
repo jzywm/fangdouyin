@@ -1,23 +1,10 @@
 import { defineStore } from "pinia"
-import getVideo from "../api/getVideolist"
+import { getVideoList } from "../api/getVideolist"
+import  formatDuration  from '@/hooks/tolonger'
 import router from "@/router";
 
-interface IVideoData {
-    id: number,
-    hostName: string,
-    hostAvatar: string,
-    hostId: number,
-    hosttoken: string,
-    title: string,
-    content: string
-    videoUrl: string,
-    coverUrl: string,
-    loveCount: number,
-    fensiCount: number,
-    timer: string,
-    longer: string,
-    alt: string,
-    commentCount: number,
+interface data {
+
 }
 
 export const useMainVideoStore = defineStore('mainVideo', {
@@ -42,16 +29,23 @@ export const useMainVideoStore = defineStore('mainVideo', {
             { id: 16, title: '汽车' },
             { id: 17, title: '美妆' },
         ],
-        activedVideo: [] as IVideoData[]
+        activedVideo: [
+
+        ] 
     }),
     actions: {
-        async getactivedVideo(activecarId: number) {
+        async getactivedVideo(activecarId: number, pages: number, pageSize:number) {
             // 即使是同一个标签，也获取数据（确保初始加载时能获取数据）
             this.activecardId = activecarId;
             try {
                 // 调用 getVideo 函数，传入 tabcar 参数
-                const response = await getVideo({ tabcar: activecarId });
-                this.activedVideo = response as IVideoData[];
+                const response = await getVideoList(activecarId, pages, pageSize);
+                console.log(response.data)
+                response.data.map(item =>{
+                    console.log(item.videoID.longer)
+                    item.videoID.longer = formatDuration(item.videoID.longer)
+                })
+                this.activedVideo = response.data
             } catch (error) {
                 console.error("Error fetching video data:", error);
             }

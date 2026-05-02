@@ -7,31 +7,31 @@
             </div>
         </div>
         <div class="videolist">
-            <div v-for="value in activedVideo" :key="value.id" class="videoItem" @click="getdetailvideo(value.id)">
-                <RouterLink :to="`/detailvideo/${value.id}`" class="routerlink">
+            <div v-for="value in activedVideo" :key="value._id" class="videoItem">
+                <RouterLink :to="`/detailvideo/${value.videoID._id}`" class="routerlink">
                     <div class="videoalt">
                         <div class="vedio">
-                            <img :src="value.coverUrl" :alt="value.alt">
+                            <img :src="value.videoID.coverurl" :alt="value.videoID.title">
                             <div class="play-button">
                                 <svg viewBox="0 0 24 24" width="24" height="24">
                                     <path d="M8 5v14l11-7z" fill="white"></path>
                                 </svg>
                             </div>
                             <div class="video-duration">
-                                {{ value.longer }}
+                                {{ value.videoID.longer }}
                             </div>
                         </div>
                     </div>
                     <div class="videomessage">
                         <div class="title">
-                            {{ value.title }}
+                            {{ value.videoID.title }}
                         </div>
                         <div class="vediohost">
                             <div class="hostname">
-                                @{{ value.hostName }}
+                                @{{ value.videoID.hostName }}
                             </div>
                             <div class="timer">
-                                {{ value.timer }}
+                                {{ value.videoID.longer }}
                             </div>
                             <div class="more">
                                 <span class="iconfont icon-gengduo"></span>
@@ -57,7 +57,7 @@ const getdetailvideo = detailVideoStore.getdetailvideo
 
 // 在组件渲染之前调用 getactivedVideo 获取初始数据
 onBeforeMount(() => {
-    getactivedVideo(mainVideoStore.activecardId)
+    getactivedVideo(mainVideoStore.activecardId,1,12)
 })
 
 

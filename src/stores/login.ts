@@ -11,22 +11,22 @@ import { useModalStore } from "@/stores/module"
 import { storeToRefs } from 'pinia'
 
 interface ApiResponse {
-  code: number;      // 状态码，例如 200, 404, 500
-  message: string;   // 返回的消息，例如 "成功", "用户不存在"
-  data: {
-    _id: string;
-    username: string;
-    tel: string;
-    Image: string;
-    createAT: string;
-    updateAT: string;
-    __v: number;
-    avatarImage: string;
-    code: string;
-    codeExpiresAt: string;
-    iat: number;
-    exp: number;
-  }
+    code: number;      // 状态码，例如 200, 404, 500
+    message: string;   // 返回的消息，例如 "成功", "用户不存在"
+    data: {
+        _id: string;
+        username: string;
+        tel: string;
+        Image: string;
+        createAT: string;
+        updateAT: string;
+        __v: number;
+        avatarImage: string;
+        code: string;
+        codeExpiresAt: string;
+        iat: number;
+        exp: number;
+    }
 }
 
 export const useLoginstore = defineStore('login', {
@@ -55,12 +55,13 @@ export const useLoginstore = defineStore('login', {
             try {
                 const response = await getRegisterCode(phone, username);
                 this.rightcode = response.code;
+                if(response.code = 200){
                 ElMessage.success(`验证码已发送，请注意查收${response.data.code}`);
+                }else {
+                    ElMessage.success(`1111,验证码已发送，请注意查收${response.message}`);
+                }
                 return true;
             } catch (error) {
-                console.error("Error fetching code:", error);
-                console.log(error)
-                ElMessage.error(`发送验证码失败，请稍后重试${error}`);
                 return false;
             }
         },
@@ -132,12 +133,14 @@ export const useLoginstore = defineStore('login', {
             try {
                 const loginitem = await postCode(phone, code)
                 const modalStore = useModalStore()
+                console.log(loginitem.data)
                 if (loginitem.code === 200) {
                     userStore.userid = loginitem.data._id
                     userStore.token = loginitem.data.token
                     userStore.username = loginitem.data.username
                     userStore.islodin = true
                     this.LoginIn = "true";
+                    userStore.avatar = loginitem.data.avatarImage
                     localStorage.setItem("usertoken", loginitem.data.token)
                     localStorage.setItem("userid", loginitem.data._id)
                     ElMessage.success("登录成功");
@@ -185,11 +188,11 @@ export const useLoginstore = defineStore('login', {
                 return false;
             }
         },
-        async verifylodin(token: string){
-            try{
-                const data = validateToken(token)
+        async verifylodin(token: string) {
+            try {
+                const data = await validateToken(token)
                 return data
-            }catch (error) {
+            } catch (error) {
                 console.error("Error verifying code:", error);
                 return false;
             }

@@ -1,7 +1,7 @@
 <template>
   <div class="side-car">
     <div class="logo">
-      <img src="../../public/favicon.ico" alt="logo">
+      <img src="../../../public//favicon.ico" alt="logo">
       <span>抖音</span>
     </div>
     <div class="nav">
@@ -24,12 +24,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useSideCarStore } from '../stores/sideCar'
-import Setting from './SettingMore.vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useSideCarStore } from '@/stores/sideCar'
+import Setting from '@/components/userput/SettingMore.vue'
+import { useRoute } from 'vue-router'
 
 const sideCarStore = useSideCarStore()
-const router = useRouter()
 const route = useRoute()
 
 // 响应式获取当前路由路径

@@ -9,18 +9,17 @@
         </div>
         <div class="user">
             <div v-for="option in headerOptionList" :key="option.id" class="userOption"
-                @click="onUserOptionClick(option)">
+                @click="onUserOptionClick(option.id)">
                 <span :class="`iconfont userIcon ${option.icon}`"></span>
                 <div class="userTitle">{{ option.title }}</div>
             </div>
             <div class="userOption">
                 <div class="login-container">
-                    <div class="login" @click="onUserOptionClick({ id: 7, title: '登录', icon: 'icon-denglu' })"
-                        @mouseenter="validatetoken">
-                        <el-avatar :size="28" :src="user.avatar.value" fit="cover">
+                    <div class="login" @mouseenter="validatetoken()">
+                        <el-avatar :size="28" :src=user.avatar.value fit="cover">
 
                         </el-avatar>
-                        <div class="loginText" v-if="user.islodin.value === false">
+                        <div class="loginText" @click="onUserOptionClick('1')" v-if="user.islodin.value === false">
                             <p class="loginTextp">登录/注册</p>
                         </div>
                         <div class="useravatar" v-else>
@@ -32,8 +31,8 @@
                             <div class="avatar" @click="inputAvatar">
                                 <el-Avatar :size="50" @click="triggerAvatarUpload" :src="user.avatar.value" fit="cover">
                                 </el-Avatar>
-                                <input v-if="user.avatar.value == ''" type="file" ref="avatarInputRef"
-                                    style="display: none" @change="handleAvatarSelect">
+                                <input v-if="user.avatar.value == ''" type="file" ref="avatarInputRef" style="display: none"
+                                    @change="handleAvatarSelect">
                             </div>
                             <div class="about-detail-my">
                                 <div class="name">
@@ -145,7 +144,7 @@
 
 <script setup lang="ts">
 import { onBeforeMount, onUnmounted, ref } from 'vue'
-import { useHeaderOptionStore } from '../stores/headeroption'
+import { useHeaderOptionStore } from '@/stores/headeroption'
 import { useModalStore } from '@/stores/module'
 import { useUserStore } from '@/stores/user'
 import uploadAvatar from '@/hooks/upLoadAvatar'
@@ -174,14 +173,14 @@ interface ApiResponse {
 const headerOptionStore = useHeaderOptionStore()
 const headerOptionList = headerOptionStore.headerOptionList
 const user = storeToRefs(useUserStore())
-const modalStore = useModalStore()
+const modalStore = storeToRefs(useModalStore())
 const verifylodin = useLoginstore().verifylodin
 
-function onUserOptionClick(option: { id: number; title: string; icon: string }) {
-    if (option.title === '登录' || option.id === 7) {
-        if (user.islodin.value === false) {
-            modalStore.modeloption = '1'
-        }
+function onUserOptionClick(id: string) {
+    if(user.islodin){
+        modalStore.modeloption.value = id
+    }else{
+        alert('请先登录')
     }
 }
 let time: number = 0
@@ -203,7 +202,7 @@ async function validatetoken() {
             } if (data && typeof data === 'object' && 'code' in data && data.code === 200) {
                 console.log(data)
                 user.islodin.value = true,
-                user.userid.value = (data as ApiResponse).data._id
+                    user.userid.value = (data as ApiResponse).data._id
                 user.username.value = (data as ApiResponse).data.username
                 user.avatar.value = (data as ApiResponse).data.avatarImage
                 console.log(user.avatar.value)
@@ -220,7 +219,7 @@ function inputAvatar() {
     console.log(123);
 
     if (!user.token) {
-        modalStore.modeloption = '1'
+        modalStore.modeloption.value = '1'
         console.log(123456)
     }
 }
@@ -247,26 +246,31 @@ function handleAvatarSelect(event: Event) {
 }
 
 onBeforeMount(async () => {
-    const token: string | null = localStorage.getItem('usertoken')
+    const token = localStorage.getItem('usertoken')
     if (token === null) {
         return false
     }
     if (token && token.trim() !== '') {
-        const response  = await verifylodin(token)
-        const data = response.data
+        console.log(token)
+        const response = await verifylodin(token)
+        let data = ''
+        if (response && typeof response === 'object' && 'data' in response) {
+        data = response.data
+    }
         console.log(data)
         if (data && typeof data === 'object' && 'code' in data && data.code === 400) {
             user.islodin.value = false,
-                user.userid.value = ''
+            user.userid.value = ''
             user.username.value = '假装有网名'
             user.avatar.value = ''
             console.log("jairuihang")
         } if (data && typeof data === 'object' && 'code' in data && data.code === 200) {
             user.islodin.value = true,
-                user.userid.value = (data as ApiResponse).data._id
+            console.log((data as ApiResponse).data)
+            user.userid.value = (data as ApiResponse).data._id
             user.username.value = (data as ApiResponse).data.username
             user.avatar.value = (data as ApiResponse).data.avatarImage
-            console.log("jairuihangdedouyin")
+            console.log("")
         }
     }
 })

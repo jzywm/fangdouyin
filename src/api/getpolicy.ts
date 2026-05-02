@@ -1,19 +1,19 @@
 import request from '@/utils/Interceptor'
-interface data {   
+interface data {
     host: string;
     policy: string;
     x_oss_signature_version: string;
-    x_oss_credential:string;
-    x_oss_date:string;
-    signature:string;
-    x_oss_signature:string;
-    dir:string;
-    security_token:string
-    url:string
+    x_oss_credential: string;
+    x_oss_date: string;
+    signature: string;
+    x_oss_signature: string;
+    dir: string;
+    security_token: string
+    url: string
 }
-export const getPolicy = async (name: string) => {
-  try {
-        const res = await request ('/user/getpolicy', {
+export const getPolicy = async () => {
+    try {
+        const res = await request('/user/getpolicy', {
             method: 'get',
         });
         const data = res.data as data

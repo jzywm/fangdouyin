@@ -1,23 +1,23 @@
 <template>
-  <div class="detail-video-comment" :class="{ 'show': detailVideoStore.isShowCommentList }">
+  <div class="detail-video-comment" :class="{ 'show': detailVideoStore.isShowCommentList.value }">
     <div class="tab">
-      <div class="tab-item" :id:number=1 :class="{ active: detailVideoStore.activeid === 1 }"
-        @click="detailVideoStore.handleTabclick(1)">
+      <div class="tab-item" :id:number=1 :class="{ active: detailVideoStore.activeid.value === 1 }"
+        @click="fangfa.handleTabclick(1)">
         <p>详情</p>
       </div>
-      <div class="tab-item" :id:number="2" :class="{ active: detailVideoStore.activeid === 2 }"
-        @click="detailVideoStore.handleTabclick(2)">
+      <div class="tab-item" :id:number="2" :class="{ active: detailVideoStore.activeid.value === 2 }"
+        @click="fangfa.handleTabclick(2)">
         <p>TA的作品</p>
       </div>
-      <div class="tab-item" :id:number="3" :class="{ active: detailVideoStore.activeid === 3 }"
-        @click="detailVideoStore.handleTabclick(3)">
+      <div class="tab-item" :id:number="3" :class="{ active: detailVideoStore.activeid.value === 3 }"
+        @click="fangfa.handleTabclick(3)">
         <p>评论</p>
       </div>
-      <div class="tab-item" :id:number="4" :class="{ active: detailVideoStore.activeid === 4 }"
-        @click="detailVideoStore.handleTabclick(4)">
+      <div class="tab-item" :id:number="4" :class="{ active: detailVideoStore.activeid.value === 4 }"
+        @click="fangfa.handleTabclick(4)">
         <p>相关推荐</p>
       </div>
-      <div class="tab-item" @click="detailVideoStore.isShowCommentList = false">
+      <div class="tab-item" @click="detailVideoStore.isShowCommentList.value = false">
         <span class="iconfont icon-cuocha_kuai"></span>
       </div>
     </div>
@@ -27,26 +27,26 @@
       </div>
     </div>
     <div class="comment-list">
-      <div v-for="item in detailVideoStore.commentlist" :key="item.id" class="comment-item">
+      <div v-for="value in detailVideoStore.commentlist.value as CommentItem[] " :key="value.id" class="comment-item">
         <div class="comment-avatar">
-          <img :src="item.useravatarurl" alt="">
+          <el-avatar :src="value.avatar"/>
         </div>
         <div class="comment-content-wrapper">
           <div class="comment-header-info">
             <div class="comment-author">
-              <span class="author-name">{{ item.username }}</span>
-              <span v-if="item.isAuthor" class="author-tag">作者</span>
+              <span class="author-name">{{ value.username }}</span>
+              <span v-if="value.isAuthor" class="author-tag">作者</span>
             </div>
           </div>
           <div class="comment-content">
-            <p>{{ item.content }}</p>
-            <div v-if="item.images && item.images.length > 0" class="comment-images">
+            <p>{{ value.content }}</p>
+            <!-- <div v-if="value.images && value.images.length > 0" class="comment-images">
               <img v-for="(image, index) in item.images" :key="index" :src="image" class="comment-image">
-            </div>
+            </div> -->
           </div>
           <div class="comment-footer">
             <div class="comment-time">
-              <span>{{ item.posttime }}·{{ item.ip }}</span>
+              <span>{{ value.posttime }}·{{ value.ip }}</span>
             </div>
             <div class="comment-actions">
               <div class="comment-action-top">
@@ -55,36 +55,36 @@
                 <span class="iconfont icon-a-fenxiangweifenxiang"></span>
                 <span class="action-text">分享</span>
                 <span class="iconfont icon-aixin"></span>
-                <span class="action-text">{{ item.likenum }}</span>
+                <span class="action-text">{{ value.likenum }}</span>
               </div>
               <div class="comment-action">
                 <div class="comment-reply-toggle"
-                  v-if="detailVideoStore.commentreplyshowid != item.id && item.replyNum > 0">
-                  <span class="reply-toggle-text" @click="detailVideoStore.commentreplyshowid = item.id">—— 展开{{
-                    item.replyNum
+                  v-if="detailVideoStore.commentreplyshowid.value != value.id && value.replyNum > 0">
+                  <span class="reply-toggle-text" @click="detailVideoStore.commentreplyshowid.value = value.id">—— 展开{{
+                    value.replyNum
                   }}条回复</span>
                 </div>
-                <div class="comment-replies" v-if="detailVideoStore.commentreplyshowid == item.id">
-                  <div class="reply-item" v-for="value in item.replylist" :key="value.id">
+                <div class="comment-replies" v-if="detailVideoStore.commentreplyshowid.value == value.id">
+                  <div class="reply-item" v-for="key in value.replylist" :key="key.id">
                     <div class="reply-avatar">
-                      <img :src="value.useravatarurl" alt="">
+                      <img :src="key.useravatarurl" alt="">
                     </div>
                     <div class="reply-content-wrapper">
                       <div class="reply-header-info">
                         <div class="reply-author">
-                          <span class="author-name">{{ value.username }}</span>
-                          <span v-if="value.isAuthor === true " class="author-tag">作者</span>
+                          <span class="author-name">{{ key.username }}</span>
+                          <span v-if="key.isAuthor === true " class="author-tag">作者</span>
                         </div>
                       </div>
                       <div class="reply-content">
-                        <p>{{ value.content }}</p>
-                        <div v-if="value.images && value.images.length > 0" class="reply-images">
-                          <img v-for="(image, index) in value.images" :key="index" :src="image" class="reply-image">
-                        </div>
+                        <p>{{ key.content }}</p>
+                        <!-- <div v-if="key.images && key.images.length > 0" class="reply-images">
+                          <img v-for="(image, index) in key.images" :key="index" :src="image" class="reply-image">
+                        </div> -->
                       </div>
                       <div class="reply-footer">
                         <div class="reply-time">
-                          <span>{{ value.posttime }}·{{ value.ip }}</span>
+                          <span>{{ key.posttime }}·{{ key.ip }}</span>
                         </div>
                         <div class="reply-actions">
                           <div class="reply-action">
@@ -93,7 +93,7 @@
                           </div>
                           <div class="reply-action">
                             <span class="iconfont icon-aixin"></span>
-                            <span class="action-text">{{ value.likenum }}</span>
+                            <span class="action-text">{{ key.likenum }}</span>
                           </div>
                         </div>
                       </div>
@@ -125,16 +125,45 @@
   </div>
 </template>
 <script lang="ts" setup name="detailVideoComment">
-
-import { useUserStore } from '@/stores/user';
-import { storeToRefs } from 'pinia';
-
-const user = useUserStore()
-const { token } = storeToRefs(user)
-
+interface ReplyItem {
+  id: number;
+  avatar:string;
+  content: string;
+  userid: number;
+  username: string;
+  useravatarurl: string; // 注意：回复里是 useravatarurl
+  likenum: number;
+  images: string[]; // 假设图片是字符串数组
+  posttime: string;
+  ip: string;
+  isLike: boolean;
+  nolike: boolean;
+  replyNum: number;
+  isAuthor: boolean;
+}
+interface CommentItem {
+  id: number;
+  avatar: string;
+  videourl: string;
+  coverurl: string;
+  content: string;
+  userid: number;
+  username: string;
+  likenum: number;
+  posttime: string;
+  ip: string;
+  isLike: boolean;
+  nolike: boolean;
+  replyNum: number;
+  isAuthor: boolean;
+  images: string[];
+  replylist: ReplyItem[]; // 核心：嵌套了回复数组
+}
 import { useDetailVideoStore } from '@/stores/detailVediio'
+import { storeToRefs } from 'pinia'
 
-const detailVideoStore = useDetailVideoStore()
+const fangfa = useDetailVideoStore()
+const detailVideoStore = storeToRefs(useDetailVideoStore())
 
 </script>
 

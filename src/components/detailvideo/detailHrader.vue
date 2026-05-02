@@ -18,8 +18,8 @@
 <script setup lang="ts" name="detailHrader">
 
 import { useRouter } from 'vue-router'
-const router = useRouter()
 
+const router = useRouter()
 </script>
 
 <style scoped>

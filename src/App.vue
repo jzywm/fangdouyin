@@ -1,10 +1,10 @@
 <script setup lang="ts">
 // 抖音网页版首页组件
-import sideCar from '@/components/sideCar.vue'
-import headerSearch from '@/components/headerSearch.vue'  
-import loginIn from '@/components/loginIn.vue'
-import mainView from '@/components/mainView.vue'
-
+import sideCar from '@/components/siderouter/sideCar.vue'
+import headerSearch from '@/components/hostview/headerSearch.vue'  
+import loginIn from '@/components/userput/loginIn.vue'
+import mainView from '@/components/hostview/mainView.vue'
+import postWorks from './components/userput/postWorks.vue';
 </script>
 
 <template>
@@ -17,6 +17,8 @@ import mainView from '@/components/mainView.vue'
   </div>
 
   <loginIn />
+  <postWorks />
+
 </template>
 
 <style scoped>

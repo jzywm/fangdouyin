@@ -1,20 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import mainVideo from '../components/mainVedio.vue'
-import recommend from '../components/mainRecommend.vue'
-import search from '../components/mainSearch.vue'
-import follow from '../components/mainFollow.vue'
-import friends from '../components/mainFriends.vue'
-import profile from '../components/mainProfile.vue'
-import live from '../components/mainLive.vue'
-import theater from '../components/mainTheater.vue'
-import shortPlays from '../components/mainShortPlay.vue'
-import games from '../components/mainGames.vue'
-import detailVideo from '../components/detailVedio.vue'
+import mainVideo from '../components/siderouter/mainVedio.vue'
+import recommend from '../components/siderouter/mainRecommend.vue'
+import search from '../components/siderouter/mainSearch.vue'
+import follow from '../components/siderouter/mainFollow.vue'
+import friends from '../components/siderouter/mainFriends.vue'
+import profile from '../components/siderouter/mainProfile.vue'
+import live from '../components/siderouter/mainLive.vue'
+import theater from '../components/siderouter/mainTheater.vue'
+import shortPlays from '../components/siderouter/mainShortPlay.vue'
+import games from '../components/siderouter/mainGames.vue'
+import detailVideo from '../components/detailvideo/detailVedio.vue'
 
 import { useUserStore } from '../stores/user'
 import { useModalStore } from '../stores/module'
-import { FullScreen } from '@element-plus/icons-vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

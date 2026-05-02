@@ -2,7 +2,7 @@ import request from '@/utils/Interceptor'
 
 
 export default async function postCodelogin(tel: number, code: string) {
-    const data = await request.post('user/login/code', {
+    const data = await request.post('/user/login/code', {
         tel,
         code,
     }).then(function (response) {

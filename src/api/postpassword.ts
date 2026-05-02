@@ -5,6 +5,7 @@ export default async function postpassword(tel: string, password: string) {
         const response = await axios({
             method: 'post',
             url: '/user/login/password',
+            responseType: 'json',
             data: {
                 tel,
                 password
